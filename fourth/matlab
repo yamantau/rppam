@@ -1,1 +1,95 @@
+clear
+clc
+nmax=600; %максимальное рассматриваемое число степенй свободы
+X=zeros(1,nmax);
+Y=zeros(nmax,nmax);
+for n=1:nmax
+    X(n)=n;
+    S=xlsread("signal_4_3.xlsx");%экспериментальные данные, записанные в таблицу Excel
+    nn=size(S); %размерность матрицы с экпериментальными данными
+    numbstep=nn(1)-1;
+    N=numbstep-2*n+1;
+    nsign=2;
+    interval=S(N+1,1); %время экспериментального сигнала
+    timestep=S(2,1); %временной шаг экспериментального сигнала
+    q=zeros(N,2*n);
+    r=zeros(N,1);
+    for i=1:2*n
+        for k=1:N
+            q(k,i)=S(k+i-1,nsign);
+        end
+    end
+    for j=1:N
+        r(j,1)=S(2*n+j,nsign);
+    end
+    A=q'*q;
+    B=q'*r;
+    a=A\B;
+
+    p=zeros(2*n+1,1);
+    p(1)=1;
+    for m=1:2*n
+        p(1+m)=a(2*n+1-m);
+    end
+
+    nu=roots(p);
+    lmbd=zeros(2*n,1);
+    for i=1:2*n
+        nun=nu(i);
+        lmbd(i)=log(nun)/timestep;
+    end
+
+    nfreq=0;
+
+    for i=1:2*n %избавляемя от собственных форм с нулевой мнимой частью, при которых не происходит колебательное движение
+        if imag(lmbd(i))~=0
+            nfreq=nfreq+1;
+            freqa(nfreq)=abs(imag(lmbd(i)));
+        end
+    end
+    freqd(1)=freqa(1);
+    mfreq=1;
+    for i=2:nfreq
+        if freqa(i)~=freqa(i-1)
+            mfreq=mfreq+1;
+            freqd(mfreq)=freqa(i);
+        end
+    end
+
+    for i=1:mfreq
+        Y(n,i)=freqd(i);
+    end
+end
+
+Nmax=1000;
+Mmax=10;
+step=nmax/Nmax;
+x=zeros(1,Nmax);
+yy=zeros(Mmax,Nmax);
+for i=1:1:Nmax
+    x(i)=i*step;
+    yy(:,i)= [11.712
+        23.417
+        35.433
+        56.775
+        77.195
+        90.554
+        102.26
+        141.55
+        150.04
+        150.19];
+
+end
+
+
+figure
+plot(X,Y,'o', ...
+    'MarkerEdgeColor','red')
+hold on
+plot(x,yy,'k')
+ylim([0.1 165])
+xlim([0 600])
+grid on
+xlabel('число степеней свободы')
+ylabel('собственные частоты, Гц')
 
