@@ -1,0 +1,320 @@
+!last last last try
+!
+!Super Position Method
+!
+
+!Building The Model
+/clear
+/CWD,'D:\polytech\RPpAM\superpos'   
+/prep7
+
+ET,1,BEAM189
+
+MPTEMP,1,0  
+MPDATA,DENS,1,,7800 
+
+MPTEMP,1,0  
+MPDATA,EX,1,,2.1e11   
+MPDATA,PRXY,1,,0.3  
+
+!это по Ох
+k,1,0,0,0
+k,,0,1.5,0
+
+k,,1,0,0
+k,,1,1.25,0
+
+k,,2,0,0
+k,,2,1,0 
+
+k,,3,0,0
+k,,3,0.75,0
+
+k,,4,0,0
+k,,4,0.5,0
+
+
+
+k,,0,0,2
+k,,0,1.5,2
+
+k,,1,0,2
+k,,1,1.25,2
+
+k,,2,0,2
+k,,2,1,2 
+
+k,,3,0,2
+k,,3,0.75,2
+
+k,,4,0,2
+k,,4,0.5,2
+
+
+
+k,,-1,0,0
+k,,-1,1.25,0
+
+k,,-2,0,0
+k,,-2,1,0
+k,,-3,0,0
+k,,-3,0.75,0
+
+k,,-4,0,0
+k,,-4,0.5,0
+
+
+k,,-1,0,2
+k,,-1,1.25,2
+
+k,,-2,0,2
+k,,-2,1,2 
+
+k,,-3,0,2
+k,,-3,0.75,2
+
+k,,-4,0,2
+k,,-4,0.5,2
+ !теперь рисуем прямые
+
+!Пол
+BSPLIN,9,19
+
+BSPLIN,7,17
+BSPLIN,5,15
+BSPLIN,3,13
+BSPLIN,1,11
+BSPLIN,21,29
+BSPLIN,23,31
+BSPLIN,25,33
+
+BSPLIN,27,35
+
+
+!Бока
+
+BSPLIN,19,20
+BSPLIN,18,17
+BSPLIN,15,16
+BSPLIN,13,14
+BSPLIN,11,12
+BSPLIN,29,30
+BSPLIN,31,32
+BSPLIN,34,33
+BSPLIN,36,35
+
+BSPLIN,9,10
+BSPLIN,7,8
+BSPLIN,5,6
+BSPLIN,3,4
+BSPLIN,1,2
+BSPLIN,21,22
+BSPLIN,23,24
+BSPLIN,25,26 
+BSPLIN,27,28
+
+
+
+!Крыша
+BSPLIN,10,20
+BSPLIN,8,18
+BSPLIN,6,16
+BSPLIN,4,14
+BSPLIN,2,12
+BSPLIN,22,30
+BSPLIN,24,32
+BSPLIN,26,34
+BSPLIN,28,36
+
+BSPLIN,20,18
+BSPLIN,18,16
+BSPLIN,16,14
+BSPLIN,14,12
+BSPLIN,12,30
+BSPLIN,30,32
+BSPLIN,32,34
+BSPLIN,34,36
+
+BSPLIN,10,8
+BSPLIN,8,6
+BSPLIN,6,4
+BSPLIN,4,2
+BSPLIN,2,22
+BSPLIN,22,24
+BSPLIN,24,26
+BSPLIN,26,28
+
+!Пол
+BSPLIN,17,19
+BSPLIN,17,15
+BSPLIN,15,13
+BSPLIN,13,11
+BSPLIN,11,29
+BSPLIN,29,31
+BSPLIN,31,33
+BSPLIN,33,35
+
+BSPLIN,9,7
+BSPLIN,7,5
+BSPLIN,5,3
+BSPLIN,3,1
+BSPLIN,1,21
+BSPLIN,21,23
+BSPLIN,23,25
+BSPLIN,25,27
+
+
+!Перекладины
+BSPLIN,10,7
+BSPLIN,7,6
+BSPLIN,6,3
+BSPLIN,3,2
+BSPLIN,2,21
+BSPLIN,21,24
+BSPLIN,24,25
+BSPLIN,25,28
+
+
+BSPLIN,20,17
+BSPLIN,17,16
+BSPLIN,16,13
+BSPLIN,13,12
+BSPLIN,12,29
+BSPLIN,29,32
+BSPLIN,32,33
+BSPLIN,33,36
+
+
+
+
+!Задаем поперечное сечение
+
+SECTYPE,   1, BEAM, CTUBE, , 0  
+SECOFFSET, CENT 
+SECDATA,0.25,0.3,0,0,0,0,0,0,0,0,0,0
+
+!Переходим к сетке
+!Параметры сетки:
+TYPE,   1   
+MAT,       1
+REAL,   
+ESYS,       0   
+SECNUM,   1 
+
+!Мешим
+FLST,2,84,4,ORDE,2  
+FITEM,2,1   
+FITEM,2,-84 
+LMESH,P51X  
+
+
+
+ALPHAD, 1.252   
+BETAD, 0.00026
+FINISH  
+ 
+!162 -- first
+!110 -- second
+
+!временной профиль нагрузки
+*DEL,_FNCNAME   
+*DEL,_FNCMTID   
+*DEL,_FNCCSYS   
+*SET,_FNCNAME,'function' 
+*SET,_FNCCSYS,0 
+*DIM,%_FNCNAME%,TABLE,6,7,3,,,,%_FNCCSYS%   
+! Begin of equation: {TIME} 
+*SET,%_FNCNAME%(0,0,1), 0.0, -999   
+*SET,%_FNCNAME%(2,0,1), 0.0 
+*SET,%_FNCNAME%(3,0,1), 0.0 
+*SET,%_FNCNAME%(4,0,1), 0.0 
+*SET,%_FNCNAME%(5,0,1), 0.0 
+*SET,%_FNCNAME%(6,0,1), 0.0 
+*SET,%_FNCNAME%(0,1,1), 1.0, 99, 0, 1, 1, 0, 0  
+*SET,%_FNCNAME%(0,2,1),   0 
+*SET,%_FNCNAME%(0,3,1),   0 
+*SET,%_FNCNAME%(0,4,1),   0 
+*SET,%_FNCNAME%(0,5,1),   0 
+*SET,%_FNCNAME%(0,6,1),   0 
+*SET,%_FNCNAME%(0,7,1),   0 
+! End of equation: {TIME}   
+!   
+! Begin of equation: -1000/0.056*{TIME}+1000   
+*SET,%_FNCNAME%(0,0,2), 0.056, -999
+*SET,%_FNCNAME%(2,0,2), 0.0 
+*SET,%_FNCNAME%(3,0,2), 0.0 
+*SET,%_FNCNAME%(4,0,2), 0.0 
+*SET,%_FNCNAME%(5,0,2), 0.0 
+*SET,%_FNCNAME%(6,0,2), 0.0 
+*SET,%_FNCNAME%(0,1,2), 1.0, -1, 0, -1000, 0, 0, 0  
+*SET,%_FNCNAME%(0,2,2), 0.0, -2, 0, 0.056, 0, 0, -1
+*SET,%_FNCNAME%(0,3,2),   0, -3, 0, 1, -1, 4, -2
+*SET,%_FNCNAME%(0,4,2), 0.0, -1, 0, 1, -3, 3, 1 
+*SET,%_FNCNAME%(0,5,2), 0.0, -2, 0, 1000, 0, 0, -1  
+*SET,%_FNCNAME%(0,6,2), 0.0, -3, 0, 1, -1, 1, -2
+*SET,%_FNCNAME%(0,7,2), 0.0, 99, 0, 1, -3, 0, 0 
+! End of equation: -1000/0.056*{TIME}+1000 
+!   
+! Begin of equation: 0  
+*SET,%_FNCNAME%(0,0,3), 1.123, -999
+*SET,%_FNCNAME%(2,0,3), 0.0 
+*SET,%_FNCNAME%(3,0,3), 0.0 
+*SET,%_FNCNAME%(4,0,3), 0.0 
+*SET,%_FNCNAME%(5,0,3), 0.0 
+*SET,%_FNCNAME%(6,0,3), 0.0 
+*SET,%_FNCNAME%(0,1,3), 1.0, 99, 0, 0, 0, 0, 0  
+*SET,%_FNCNAME%(0,2,3),   0 
+*SET,%_FNCNAME%(0,3,3),   0 
+*SET,%_FNCNAME%(0,4,3),   0 
+*SET,%_FNCNAME%(0,5,3),   0 
+*SET,%_FNCNAME%(0,6,3),   0 
+*SET,%_FNCNAME%(0,7,3),   0 
+! End of equation: 0
+
+/SOLU  
+ANTYPE,modal
+MODOPT,LANB,10  
+EQSLV,SPAR  
+MXPAND,0, , ,0  
+LUMPM,0 
+PSTRES,0
+!задание граничных условий
+DL,1, ,ALL, 
+DL,9, ,ALL,                       ! Constraints
+
+F,162,FX, %function%
+F,162,FY, %function%
+F,162,FZ, %function%  
+RESVEC,off
+
+save
+SOLVE   
+FINISH
+
+/SOLU   
+ANTYPE,4
+TRNOPT,MSUP, , , ,0 
+LUMPM,0   
+TRNOPT,MSUP,10, , ,0 
+OUTRES,ALL,ALL,  
+FDELE,162,ALL 
+TIME,0  
+AUTOTS,0
+DELTIM,0.0001, , ,1   
+KBC,0   
+TSRES,ERASE 
+RESVEC,OFF
+SOLVE 
+  
+F,162,FX, %function%
+F,162,FY, %function%
+F,162,FZ, %function%  
+TIME, 0.1 
+AUTOTS,0
+DELTIM,0.0001, , ,1   
+KBC,0   
+TSRES,ERASE 
+RESVEC,OFF
+
+SOLVE   
+FINISH  
