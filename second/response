@@ -254,8 +254,8 @@ FINISH
 
 /post26
 file,file,rfrq 
-nsol,2,162,u,y,162_node_uy_first_point          ! store ux displacements
-nsol,3,110,u,y,110_node_uy_second_point
+nsol,2,162,u,y,162_node_first_point          ! store ux displacements
+nsol,3,110,u,y,110_node_second_point
 /grid,1                   ! turn grid on
 /axlab,y,disp             ! y-axis label disp
 plvar,2,3                 ! display variables 2 and 3
